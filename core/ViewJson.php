@@ -7,7 +7,12 @@ class ViewJson implements ViewInterface
     public function __construct(string $templatePath)
     {
         if (!$templatePath) {
-            throw new \InvalidArgumentException('Не установлен TEMPLATE_PATH');
+            throw new \InvalidArgumentException('Not installed TEMPLATE_PATH');
+        }
+
+        if (!is_dir($templatePath) && !is_readable($templatePath)) {
+            throw new \InvalidArgumentException("Not found dir: $templatePath or 
+            check read permissions");
         }
 
         $this->tplPath = $this->setViewPath($templatePath);

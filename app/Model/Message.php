@@ -206,6 +206,6 @@ class Message extends AbsModel
 
     public function send()
     {
-        (new Mail)->getConnection()->create($this->text)->send();
+        (new Mail)->createAndSend($this->text);
     }
 }

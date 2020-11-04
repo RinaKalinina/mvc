@@ -9,10 +9,13 @@ class ViewPhp implements ViewInterface
 
     public function __construct(string $templatePath)
     {
-        //TODO примать эллемментом мыссива, через конфиг TEMPLATE_PATH через параметр
-        //   $this->tplPath = ROOT_DIR . DIRECTORY_SEPARATOR . 'app/View';
         if (!$templatePath) {
-            throw new \InvalidArgumentException('Не установлен TEMPLATE_PATH');
+            throw new \InvalidArgumentException('Not installed TEMPLATE_PATH');
+        }
+
+        if (!is_dir($templatePath) && !is_readable($templatePath)) {
+            throw new \InvalidArgumentException("Not found dir: $templatePath or 
+            check read permissions");
         }
 
         $this->tplPath = $this->setViewPath($templatePath);
@@ -24,9 +27,7 @@ class ViewPhp implements ViewInterface
         $tplFullPath = $this->tplPath . DIRECTORY_SEPARATOR . $tpl . $extension;
 
         if (!file_exists($tplFullPath)) {
-            header("HTTP/1.0 404 Not Found");
-            echo 'Страница не найдена';
-            return null;
+            throw new \InvalidArgumentException('Template not found');
         }
 
         extract($data);

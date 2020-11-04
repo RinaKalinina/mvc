@@ -13,7 +13,7 @@ use Twig\Source;
 use Twig\Template;
 
 /* User/index.twig */
-class __TwigTemplate_82f6ddf14cf9bf6a06ba1d29b5667cbd8e671b807ae414d4f32cb2346a4764ff extends \Twig\Template
+class __TwigTemplate_9f676edc052bc06371355dfd46059ec81c3abafe21553be1eeba05bcc5369576 extends \Twig\Template
 {
     private $source;
     private $macros = [];
@@ -101,32 +101,6 @@ class __TwigTemplate_82f6ddf14cf9bf6a06ba1d29b5667cbd8e671b807ae414d4f32cb2346a4
 
     public function getSourceContext()
     {
-        return new Source("{% if user %}
-    Профиль пользователя: {{ user.getName() }}
-    <br>
-    <br>
-    <form action=\"/user/logout\" method=\"post\">
-        <input type=\"submit\" value=\"Выйти\">
-    </form>
-    <br>
-    <br>
-    <form action=\"/user/feedback\" method=\"post\">
-        Оставить отзыв: <br><br>
-        <textarea name=\"message\" style=\"width: 250px; height: 100px;\"></textarea><br><br>
-        <input type=\"submit\" name=\"submit\" value=\"Отправить\">
-    </form>
-    <br>
-    <br>
-
-    {% if errors is defined %}
-        {% for error in errors %}
-            <span style=\"color: red\"> {{ errorDescription[error] }} </span>
-        {% endfor %}
-    {% endif %}
-{% else %}
-    Пользователь не найден
-{% endif %}
-
-", "User/index.twig", "C:\\OpenServer\\domains\\mvc.lo\\app\\ViewTwig\\User\\index.twig");
+        return new Source("", "User/index.twig", "C:\\OpenServer\\domains\\mvc.lo\\app\\ViewTwig\\User\\index.twig");
     }
 }

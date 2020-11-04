@@ -2,6 +2,10 @@
 
 namespace Core;
 
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+use Twig\Extension\DebugExtension;
+
 class ViewTwig implements ViewInterface
 {
     private $tplPath = '';
@@ -10,7 +14,12 @@ class ViewTwig implements ViewInterface
     public function __construct(string $templatePath)
     {
         if (!$templatePath) {
-            throw new \InvalidArgumentException('Не установлен TEMPLATE_PATH');
+            throw new \InvalidArgumentException('Not installed TEMPLATE_PATH');
+        }
+
+        if (!is_dir($templatePath) && !is_readable($templatePath)) {
+            throw new \InvalidArgumentException("Not found dir: $templatePath or 
+            check read permissions");
         }
 
         $this->tplPath = $this->setViewPath($templatePath);
@@ -22,29 +31,23 @@ class ViewTwig implements ViewInterface
         $tplFullPath = $this->tplPath . DIRECTORY_SEPARATOR . $tpl . $extension;
 
         if (!file_exists($tplFullPath)) {
-            header("HTTP/1.0 404 Not Found");
-            echo 'Страница не найдена';
-            return null;
+            throw new \InvalidArgumentException('Template not found');
         }
 
-        $debug = false;
-
-        if (DEV_MOD) {
-            $debug =  true;
-        }
-
-        $loader = new \Twig\Loader\FilesystemLoader($this->tplPath);
-        $twig = new \Twig\Environment(
+        $loader = new FilesystemLoader($this->tplPath);
+        $twig = new Environment(
             $loader,
             [
                 'cache' => $this->tplPath . '_cache',
                 'autoescape' => false,
                 'auto_reload' => true,
-                'debug' => $debug
+                'debug' => DEV_MOD
             ]
         );
 
-        $twig->addExtension(new \Twig\Extension\DebugExtension());
+        if (DEV_MOD) {
+            $twig->addExtension(new DebugExtension());
+        }
 
         return $twig->render($tpl . $extension, $data);
     }
