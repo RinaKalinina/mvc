@@ -1,0 +1,26 @@
+Регистрация:<br>
+<form action="/user/register" method="post">
+    <input type="text" name="name" placeholder="Введите имя"><br><br>
+    <input type="text" name="email" placeholder="Введите email"><br><br>
+    <input type="password" name="password" placeholder="Введите пароль"><br><br>
+    <input type="password" name="repeatedPassword" placeholder="Повторите пароль"><br><br>
+    <input type="submit" name="submit" value="Зарегестрироваться">
+</form>
+<br>
+<br>
+
+Войти:<br>
+<form action="/user/login" method="post">
+    <input type="text" name="email" placeholder="Введите email"><br><br>
+    <input type="password" name="password" placeholder="Введите пароль"><br><br>
+    <input type="submit" name="submit" value="Войти">
+</form>
+
+<br>
+<br>
+
+<?php if (isset($errors)): ?>
+    <?php foreach ($errors as $error): ?>
+        <span style="color: red"><?= $errorDescription[$error]; ?></span>
+    <?php endforeach; ?>
+<?php endif; ?>

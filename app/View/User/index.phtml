@@ -1,0 +1,26 @@
+<?php /** @var app\Model\User $user */ ?>
+<?php if ($user): ?>
+    Профиль пользователя: <?= $user->getName() ?>
+    <br>
+    <br>
+    <form action="/user/logout" method="post">
+        <input type="submit" value="Выйти">
+    </form>
+    <br>
+    <br>
+    <form action="/user/feedback" method="post">
+        Оставить отзыв: <br><br>
+        <textarea name="message" style="width: 250px; height: 100px;"></textarea><br><br>
+        <input type="submit" name="submit" value="Отправить">
+    </form>
+    <br>
+    <br>
+
+    <?php if (isset($errors)): ?>
+        <?php foreach ($errors as $error): ?>
+            <span style="color: red"><?= $errorDescription[$error]; ?></span>
+        <?php endforeach; ?>
+    <?php endif; ?>
+<?php else: ?>
+    Пользователь не найден
+<?php endif; ?>

@@ -1,0 +1,24 @@
+<?php /** @var app\Model\User $user */ ?>
+
+Вы вошли как <?= $user->getName() ?>
+
+<form action="/user/logout" method="post">
+    <input type="submit" value="Выйти">
+</form>
+<br>
+<br>
+
+<form action="/message/send" method="post" enctype="multipart/form-data">
+    Сообщение: <br><br>
+    <textarea name="text" style="width: 250px; height: 100px;">
+    </textarea><br><br>
+    Прикрепите картинку:<br><br>
+    <input name="userFile" type="file"/><br><br>
+    <input type="submit" name="submit" value="Отправить">
+</form>
+
+<?php if (isset($errors)): ?>
+    <?php foreach ($errors as $error): ?>
+        <span style="color: red"><?= $errorDescription[$error]; ?></span>
+    <?php endforeach; ?>
+<?php endif; ?>

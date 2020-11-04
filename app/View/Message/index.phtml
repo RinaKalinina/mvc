@@ -1,0 +1,23 @@
+<?php /** @var app\Model\Message $message */ ?>
+<?php if ($messages): ?>
+    <?php foreach ($messages as $message): ?>
+        <div>
+            <p><?= $message->getUserName() ?></p>
+            <p><?= $message->getText() ?></p>
+            <?php if ($message->getImg()) : ?>
+                <div><img src="<?= $message->getImg() ?>" alt=""></div>
+            <?php endif; ?>
+            <br>
+
+            <? if (isset($isAdmin)): ?>
+                <form action="/message/delete" method="post">
+                    <input type="hidden" name="id" value="<?= $message->getId() ?>">
+                    <input type="submit" value="Удалить">
+                </form>
+            <?php endif; ?>
+        </div>
+        <hr>
+    <?php endforeach; ?>
+<?php else: ?>
+    <p>Сообщений не найдено</p>
+<?php endif; ?>
