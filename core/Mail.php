@@ -8,50 +8,69 @@ use Swift_SmtpTransport;
 
 class Mail
 {
-    private $mailer;
-    private $message;
+    protected $to = SMTP_TO;
 
     public function __construct()
     {
-        $this->is_valid([
-            'SMTP_HOST' => SMTP_HOST,
-            'SMTP_PORT' => SMTP_PORT,
-            'SMTP_USER_NAME' => SMTP_USER_NAME,
-            'SMTP_PASSWORD' => SMTP_PASSWORD,
-            'SMTP_ENCRYPTION' => SMTP_ENCRYPTION
-        ]);
+        if (empty(SMTP_HOST) && !is_string(SMTP_HOST)) {
+            throw new \InvalidArgumentException('Not installed SMTP_HOST in config.php');
+        }
 
-        $transport = (new Swift_SmtpTransport(SMTP_HOST, SMTP_PORT))
+        if (empty(SMTP_PORT) && !is_int(SMTP_PORT)) {
+            throw new \InvalidArgumentException('Not installed SMTP_PORT in config.php');
+        }
+
+        if (empty(SMTP_USER_NAME) && !is_string(SMTP_USER_NAME)) {
+            throw new \InvalidArgumentException('Not installed SMTP_USER_NAME in config.php');
+        }
+
+        if (empty(SMTP_PASSWORD) && !is_string(SMTP_PASSWORD)) {
+            throw new \InvalidArgumentException('Not installed SMTP_HOST in config.php');
+        }
+
+        if (empty(SMTP_ENCRYPTION) && !is_string(SMTP_ENCRYPTION)) {
+            throw new \InvalidArgumentException('Not installed SMTP_ENCRYPTION in config.php');
+        }
+
+        if (empty(SMTP_FROM_ADDRESS) && !is_string(SMTP_FROM_ADDRESS)) {
+            throw new \InvalidArgumentException('Not installed SMTP_FROM_ADDRESS in config.php');
+        }
+
+        if (empty(SMTP_FROM_NAME) && !is_string(SMTP_FROM_NAME)) {
+            throw new \InvalidArgumentException('Not installed SMTP_FROM_NAME in config.php');
+        }
+
+        if (empty(SMTP_TO) && !is_string(SMTP_TO)) {
+            throw new \InvalidArgumentException('Not installed SMTP_TO in config.php');
+        }
+    }
+
+    protected function getTransport()
+    {
+        return (new Swift_SmtpTransport(SMTP_HOST, SMTP_PORT))
             ->setUsername(SMTP_USER_NAME)
             ->setPassword(SMTP_PASSWORD)
             ->setEncryption(SMTP_ENCRYPTION);
-
-        $this->mailer = new Swift_Mailer($transport);
     }
 
-    public function createAndSend(string $body, $title = 'feedback', $to = [SMTP_TO])
+    public function send(string $body, $title)
     {
-        $this->is_valid([
-            'SMTP_FROM_ADDRESS' => SMTP_FROM_ADDRESS,
-            'SMTP_FROM_NAME' => SMTP_FROM_NAME,
-            'SMTP_TO' => SMTP_TO
-        ]);
+        $to = !empty($this->to) ? $this->to : SMTP_TO;
 
-        $this->message = (new Swift_Message($title))
+        $message = (new Swift_Message($title))
             ->setFrom([SMTP_FROM_ADDRESS => SMTP_FROM_NAME])
             ->setTo($to)
             ->setBody($body);
 
-        $this->mailer->send($this->message);
+        $mailer = new Swift_Mailer($this->getTransport());
+
+        $mailer->send($message);
     }
 
-    public function is_valid(array $data)
+    public function sendTo(string $body, $title, $to)
     {
-        foreach ($data as $key => $value) {
-            if (empty($value)) {
-                throw new \InvalidArgumentException("Not installed $key");
-            }
-        }
+        $this->to = $to;
+        $this->send($body, $title);
     }
 
 }
