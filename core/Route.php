@@ -18,7 +18,6 @@ class Route
                 // сатический роутинг
                 $this->controllerName = $route[0];
                 $this->actionName = $route[1];
-                echo 111;
             } else {
                 // динамический роутинг
                 $parts = explode('/', $path);

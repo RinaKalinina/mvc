@@ -3,7 +3,6 @@
 namespace App\Model;
 
 use Core\AbsModel;
-use Core\DB;
 use Core\Mail;
 
 class Message extends AbsModel

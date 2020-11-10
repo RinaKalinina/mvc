@@ -12,9 +12,6 @@ abstract class AbsController
     /** @var User */
     protected $user;
 
-    /** @var User */
-    protected $admin;
-
     protected function redirect(string $url)
     {
         return header("Location:" . $url);

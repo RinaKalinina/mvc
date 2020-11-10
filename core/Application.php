@@ -2,7 +2,6 @@
 
 namespace Core;
 
-use App\Controller\User;
 use App\Model\User as UserModel;
 
 class Application

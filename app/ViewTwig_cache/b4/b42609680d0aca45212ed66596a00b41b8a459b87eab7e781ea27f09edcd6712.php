@@ -127,6 +127,6 @@ class __TwigTemplate_82f6ddf14cf9bf6a06ba1d29b5667cbd8e671b807ae414d4f32cb2346a4
     Пользователь не найден
 {% endif %}
 
-", "User/index.twig", "C:\\OpenServer\\domains\\mvc.lo\\app\\ViewTwig\\User\\index.twig");
+", "User/index.twig", "C:\\OpenServer\\domains\\mvc-new.lo\\app\\ViewTwig\\User\\index.twig");
     }
 }

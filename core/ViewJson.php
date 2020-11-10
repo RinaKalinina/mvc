@@ -4,6 +4,9 @@ namespace Core;
 
 class ViewJson implements ViewInterface
 {
+    private $tplPath = '';
+    private $data = [];
+
     public function __construct(string $templatePath)
     {
         if (!$templatePath) {
