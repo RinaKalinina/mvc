@@ -5,6 +5,7 @@ namespace App\Controller;
 use Core\AbsController;
 use App\Model\User as UserModel;
 use App\Model\Message as MessageModel;
+use Core\Mail;
 use Core\ViewTwig;
 
 class User extends AbsController
@@ -49,15 +50,15 @@ class User extends AbsController
         }
 
         if ($success) {
-            $user = new UserModel([
+            $data = [
                 'name' => $name,
                 'email' => $email,
                 'password' => $password
-            ]);
+            ];
 
-            $user->save();
+            $user = (new UserModel)->addNewUser($data);
 
-            $_SESSION['id'] = $user->getId();
+            $_SESSION['id'] = $user->id;
             $this->setUser($user);
 
             $this->redirect('/blog');
@@ -85,10 +86,10 @@ class User extends AbsController
             if (!$user) {
                 $errors[] = 13;
             } else {
-                if ($user->getPassword() != $user->getPasswordHash($password)) {
+                if ($user->password != $user->getPasswordHash($password)) {
                     $errors[] = 13;
                 } else {
-                    $_SESSION['id'] = $user->getId();
+                    $_SESSION['id'] = $user->id;
                     $this->redirect('/blog');
                 }
             }
@@ -112,8 +113,11 @@ class User extends AbsController
 
     public function messagesAction()
     {
-        $id = (int)$_GET['id'];
+        if (!isset($_GET['id'])) {
+            return null;
+        }
 
+        $id = (int)$_GET['id'];
         $messages = (new MessageModel)->getJsonOfMessages($id);
 
         return $this->view->render('User/messages', [
@@ -138,12 +142,7 @@ class User extends AbsController
             ]);
         }
 
-        $message = new MessageModel([
-            'user_id' => $_SESSION['id'],
-            'text' => $userMessage
-        ]);
-
-        $message->send();
+        (new Mail)->send($userMessage, 'feedback');
 
         $this->redirect('/blog');
     }

@@ -1,6 +1,6 @@
 <?php /** @var app\Model\User $user */ ?>
 <?php if ($user): ?>
-    Профиль пользователя: <?= $user->getName() ?>
+    Профиль пользователя: <?= $user->name ?>
     <br>
     <br>
     <form action="/user/logout" method="post">

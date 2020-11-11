@@ -1,10 +1,11 @@
 {
   "require": {
+    "php": "7.2.*",
     "swiftmailer/swiftmailer": "~6.2.3",
     "twig/twig": "~2.14.1",
     "symfony/filesystem": "~5.1.8",
     "intervention/image": "~2.5.1",
-    "illuminate/database": "~8.14.0"
+    "illuminate/database": "~7.28.4"
   },
   "autoload": {
     "psr-4": {

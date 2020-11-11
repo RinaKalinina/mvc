@@ -93,13 +93,13 @@ class Message extends AbsController
         }
 
         if ($success) {
-            $message = new MessageModel([
+            $data = [
                 'user_id' => $_SESSION['id'],
                 'text' => $userMessage,
                 'img' => $newFileName
-            ]);
+            ];
 
-            $message->save();
+            (new MessageModel)->addNewMessage($data);
 
             $this->redirect('/message');
         }
