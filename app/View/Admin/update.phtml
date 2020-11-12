@@ -1,0 +1,57 @@
+<p><a href="/admin/index" class="link">Вернуться на главную</a></p>
+<p><a href="/admin/create" class="link">Создать пользователя</a></p>
+<h1>Редактировать пользователя</h1>
+<br>
+<?php if (isset($errors)): ?>
+    <?php foreach ($errors as $error): ?>
+        <span style="color: red"><?= $errorDescription[$error]; ?></span>
+    <?php endforeach; ?>
+<?php endif; ?>
+<br>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <td>Имя</td>
+        <td>Email</td>
+        <td>Картинка</td>
+        <td></td>
+    </tr>
+    <?php foreach ($users as $user): ?>
+        <tr>
+            <form action="/admin/update" method="post" enctype="multipart/form-data">
+                <td>
+                    <?= $user->name ?>:<br><br>
+                    <input type="text" name="name" placeholder="Введите имя">
+                </td>
+                <td>
+                    <?= $user->email ?>:<br><br>
+                    <input type="text" name="email" placeholder="Введите email">
+                </td>
+                <td>
+                    <img src="<?= $user->getImg() ?? '' ?>" alt=""><br><br>
+                    <input name="userFile" type="file"/>
+                </td>
+                <td>
+                    <input type="hidden" name="id" value="<?= $user->id ?>">
+                    <input type="submit" name="submit" value="Обновить">
+                </td>
+            </form>
+        </tr>
+    <?php endforeach; ?>
+</table>
+
+<style>
+    table {
+        border-collapse: collapse;
+        text-align: center;
+    }
+
+    .link {
+        color: black;
+        text-decoration: none;
+    }
+
+    .link:hover {
+        text-decoration: underline;
+    }
+</style>

@@ -6,6 +6,13 @@ use Core\AbsModel;
 
 class User extends AbsModel
 {
+    protected $fillable = ['name', 'password', 'email', 'img'];
+
+    public function messages()
+    {
+        return $this->hasMany('App\Model\Message');
+    }
+
     public function addNewUser(array $data = [])
     {
         if (empty($data)) {
@@ -16,9 +23,7 @@ class User extends AbsModel
             $data['password'] = $this->getPasswordHash($data['password']);
         }
 
-        $lastInsertId = User::query()->insertGetId($data);
-
-        return User::where('id', $lastInsertId)->first();
+        return User::create($data);
     }
 
     public function getUserById(int $id): ?self
@@ -31,10 +36,23 @@ class User extends AbsModel
         return User::where('email', $email)->first();
     }
 
+    public function getAllUsersOrderByUpdate()
+    {
+        return User::orderBy('updated_at', 'desc')->get();
+    }
+
     public function isAdmin()
     {
         if ($this->id === ADMIN) {
             return true;
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImg(): ?string
+    {
+        return $this->img ? '/uploads/user/' . $this->img : null;
     }
 }

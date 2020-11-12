@@ -1,0 +1,14 @@
+Войти:<br>
+<form action="/admin/login" method="post">
+    <input type="text" name="email" placeholder="Введите email"><br><br>
+    <input type="password" name="password" placeholder="Введите пароль"><br><br>
+    <input type="submit" name="submit" value="Войти">
+</form>
+<br>
+<br>
+
+<?php if (isset($errors)): ?>
+    <?php foreach ($errors as $error): ?>
+        <span style="color: red"><?= $errorDescription[$error]; ?></span>
+    <?php endforeach; ?>
+<?php endif; ?>

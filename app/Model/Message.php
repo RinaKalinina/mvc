@@ -6,14 +6,20 @@ use Core\AbsModel;
 
 class Message extends AbsModel
 {
+    protected $fillable = ['user_id', 'text', 'img'];
+
+    public function user()
+    {
+        return $this->belongsTo('App\Model\User');
+    }
+
     /**
      * @return mixed
      */
     public function getImg(): ?string
     {
-        return $this->img ? 'uploads/message/' . $this->img : null;
+        return $this->img ? '/uploads/message/' . $this->img : null;
     }
-
 
     /**
      * @param array $data
@@ -25,7 +31,7 @@ class Message extends AbsModel
             return null;
         }
 
-        return Message::query()->insertGetId($data);
+        return Message::create($data);
     }
 
     public function deleteMessage(int $id)
@@ -35,10 +41,7 @@ class Message extends AbsModel
 
     public function getListOfMessages($limit = 20)
     {
-        return Message::select('messages.*', 'users.name')
-            ->join('users', 'messages.user_id', '=', 'users.id')
-            ->limit($limit)
-            ->get();
+        return Message::with('user')->limit($limit)->get();
     }
 
     public function getJsonOfMessages(int $id, $limit = 20)

@@ -2,7 +2,7 @@
 <?php if ($messages): ?>
     <?php foreach ($messages as $message): ?>
         <div>
-            <p><?= $message->name ?></p>
+            <p><?= $message->user->name ?></p>
             <p><?= $message->text ?></p>
             <?php if ($message->getImg()) : ?>
                 <div><img src="<?= $message->getImg() ?>" alt=""></div>
