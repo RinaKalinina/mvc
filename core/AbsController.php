@@ -4,10 +4,11 @@ namespace Core;
 
 use App\Model\User;
 use Core\Interfaces\StorageInterface;
+use Core\Interfaces\ViewInterface;
 
 abstract class AbsController
 {
-    /** @var ViewInterface*/
+    /** @var ViewInterface */
     protected $view;
 
     /** @var Auth */

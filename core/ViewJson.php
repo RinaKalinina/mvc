@@ -2,6 +2,8 @@
 
 namespace Core;
 
+use Core\Interfaces\ViewInterface;
+
 class ViewJson implements ViewInterface
 {
     private $tplPath = '';

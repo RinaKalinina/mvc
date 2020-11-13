@@ -2,6 +2,8 @@
 
 namespace Core;
 
+use Core\Interfaces\ViewInterface;
+
 class ViewPhp implements ViewInterface
 {
     private $tplPath = '';

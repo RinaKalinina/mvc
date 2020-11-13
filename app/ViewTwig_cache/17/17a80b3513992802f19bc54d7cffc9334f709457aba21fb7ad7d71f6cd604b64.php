@@ -37,7 +37,7 @@ class __TwigTemplate_b67d2062d029e24f8ea50cac3a6b65a51f90de5c726401b099aa343ddf6
         if (($context["user"] ?? null)) {
             // line 2
             echo "    Профиль пользователя: ";
-            echo twig_get_attribute($this->env, $this->source, ($context["user"] ?? null), "getName", [], "method", false, false, false, 2);
+            echo twig_get_attribute($this->env, $this->source, ($context["user"] ?? null), "name", [], "any", false, false, false, 2);
             echo "
     <br>
     <br>
@@ -102,7 +102,7 @@ class __TwigTemplate_b67d2062d029e24f8ea50cac3a6b65a51f90de5c726401b099aa343ddf6
     public function getSourceContext()
     {
         return new Source("{% if user %}
-    Профиль пользователя: {{ user.getName() }}
+    Профиль пользователя: {{ user.name }}
     <br>
     <br>
     <form action=\"/user/logout\" method=\"post\">
