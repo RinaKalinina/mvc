@@ -10,7 +10,7 @@ class Message extends AbsController
 {
     public function indexAction()
     {
-        if (!$this->user) {
+        if ($this->session->quest()) {
             $this->redirect('/user/register');
         }
 
@@ -18,7 +18,7 @@ class Message extends AbsController
 
         return $this->view->render('Message/index', [
             'messages' => $messages,
-            'isAdmin' => $this->user->isAdmin()
+            'isAdmin' => $this->getUser()->isAdmin()
         ]);
 
     }
@@ -94,7 +94,7 @@ class Message extends AbsController
 
         if ($success) {
             $data = [
-                'user_id' => $_SESSION['id'],
+                'user_id' => $this->getUserId(),
                 'text' => $userMessage,
                 'img' => $newFileName
             ];
@@ -106,14 +106,14 @@ class Message extends AbsController
 
         if (isset($_POST['submit'])) {
             return $this->view->render('Blog/index', [
-                'user' => $this->user,
+                'user' => $this->getUser(),
                 'errorDescription' => parent::getErrorDescription(),
                 'errors' => $errors
             ]);
         }
 
         return $this->view->render('Blog/index', [
-            'user' => $this->user
+            'user' => $this->getUser()
         ]);
     }
 

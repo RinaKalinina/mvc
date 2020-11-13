@@ -3,14 +3,15 @@
 namespace Core;
 
 use App\Model\User;
+use Core\Interfaces\StorageInterface;
 
 abstract class AbsController
 {
     /** @var ViewInterface*/
     protected $view;
 
-    /** @var User */
-    protected $user;
+    /** @var Auth */
+    protected $session;
 
     protected function redirect(string $url)
     {
@@ -22,9 +23,37 @@ abstract class AbsController
         $this->view = $view;
     }
 
-    public function setUser(User $user): void
+    public function getUser(): ?User
     {
-        $this->user = $user;
+        if ($this->session->quest()) {
+            return null;
+        }
+
+        $user = $this->session->user();
+
+        $user = (new User)->getUserById($user['id']);
+        if (!$user) {
+            return null;
+        }
+
+        return $user;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getUserId(): ?int
+    {
+        if ($user = $this->getUser()) {
+            return $user->id;
+        }
+
+        return false;
+    }
+
+    public function setSession(StorageInterface $session): void
+    {
+        $this->session = new Auth($session);
     }
 
     public function getErrorDescription()

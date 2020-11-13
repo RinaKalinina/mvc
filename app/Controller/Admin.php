@@ -10,7 +10,7 @@ class Admin extends AbsController
 {
     public function indexAction()
     {
-        if (!$this->user || !$this->user->isAdmin()) {
+        if ($this->session->quest() || !$this->getUser()->isAdmin()) {
             $this->redirect('/admin/login');
         }
 
@@ -31,7 +31,7 @@ class Admin extends AbsController
             $user = (new User)->getUserByEmail($email);
 
             if ($user && $user->isAdmin() && ($user->password === $user->getPasswordHash($password))) {
-                $_SESSION['id'] = $user->id;
+                $this->session->login($user->toArray());
                 $this->redirect('/admin/index');
             } else {
                 $errors[] = 13;
@@ -50,7 +50,7 @@ class Admin extends AbsController
 
     public function createAction()
     {
-        if (!$this->user || !$this->user->isAdmin()) {
+        if ($this->session->quest() || !$this->getUser()->isAdmin()) {
             $this->redirect('/admin/login');
         }
 
@@ -107,7 +107,7 @@ class Admin extends AbsController
 
     public function updateAction()
     {
-        if (!$this->user || !$this->user->isAdmin()) {
+        if ($this->session->quest() || !$this->getUser()->isAdmin()) {
             $this->redirect('/admin/login');
         }
 

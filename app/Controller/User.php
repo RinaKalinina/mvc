@@ -12,14 +12,14 @@ class User extends AbsController
 {
     public function indexAction()
     {
-        if (!$this->user) {
+        if ($this->session->quest()) {
             $this->redirect('/user/register');
         }
 
         parent::setView(new ViewTwig('app/ViewTwig'));
 
         return $this->view->render('User/index', [
-            'user' => $this->user,
+            'user' => $this->getUser(),
             'errorDescription' => parent::getErrorDescription()
         ]);
     }
@@ -58,9 +58,7 @@ class User extends AbsController
 
             $user = (new UserModel)->addNewUser($data);
 
-            $_SESSION['id'] = $user->id;
-            $this->setUser($user);
-
+            $this->session->login($user->toArray());
             $this->redirect('/blog');
         }
 
@@ -89,7 +87,7 @@ class User extends AbsController
                 if ($user->password != $user->getPasswordHash($password)) {
                     $errors[] = 13;
                 } else {
-                    $_SESSION['id'] = $user->id;
+                    $this->session->login($user->toArray());
                     $this->redirect('/blog');
                 }
             }
@@ -107,7 +105,7 @@ class User extends AbsController
 
     public function logoutAction()
     {
-        session_destroy();
+        $this->session->logout();
         $this->redirect('/user/register');
     }
 
@@ -136,7 +134,7 @@ class User extends AbsController
             parent::setView(new ViewTwig('app/ViewTwig'));
 
             return $this->view->render('User/index', [
-                'user' => $this->user,
+                'user' => $this->getUser(),
                 'errorDescription' => parent::getErrorDescription(),
                 'errors' => $errors
             ]);

@@ -17,7 +17,7 @@ class Application
 
     public function run()
     {
-        session_start();
+        $session = new StorageSession();
         $this->addRoutes();
         $this->initController();
         $this->initAction();
@@ -45,22 +45,9 @@ class Application
         }
 
         $this->controller->setView($view);
-        $this->initUser();
+        $this->controller->setSession($session);
 
         return $this->controller->{$this->actionName}();
-    }
-
-    private function initUser()
-    {
-        $id = $_SESSION['id'] ?? null;
-
-        if ($id) {
-            $user = (new UserModel)->getUserById($id);
-
-            if ($user) {
-                $this->controller->setUser($user);
-            }
-        }
     }
 
     private function addRoutes()
